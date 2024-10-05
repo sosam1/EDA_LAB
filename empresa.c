@@ -33,14 +33,15 @@ TipoRet CrearOrg(Empresa &e, Cadena cargo){
 	}
 	else{
 		Cargo primerCargo = CrearNuevoCargo(cargo);
-		CrearEmpresa(primerCargo);
+		e = CrearEmpresa(primerCargo);
 		return OK;
 	}
 }
 
 TipoRet EliminarOrg(Empresa &e){
 // Eliminar el organigrama, elimina toda la estructura del organigrama, liberando la memoria asignada.
-	return NO_IMPLEMENTADA;
+	// Verificar que la empresa no sea nula
+    return NO_IMPLEMENTADA;
 }
 
 TipoRet NuevoCargo(Empresa &e, Cadena cargoPadre, Cadena nuevoCargo){
@@ -61,7 +62,16 @@ TipoRet EliminarCargo(Empresa &e, Cadena cargo){
 TipoRet ListarCargosAlf(Empresa e){
 // Listar todos los cargos ordenados alfabéticamente.
 // Lista todos los cargos de la empresa ordenados alfabéticamente por nombre del cargo. 
-	return NO_IMPLEMENTADA;
+	if (e == NULL) {
+        return ERROR;
+    }
+    // Imprimir el único cargo que debería existir por ahora
+    if (e->cargo != NULL) {
+        cout << "Cargo: " << ObtenerNombreCargo(e->cargo) << endl;
+        return OK;
+    } else {
+        return ERROR;
+    }
 }
 
 TipoRet ListarJerarquia(Empresa e){

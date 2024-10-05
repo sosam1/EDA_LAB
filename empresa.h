@@ -13,7 +13,6 @@
 
 typedef struct nodo_empresa * Empresa;
 
-
 TipoRet CrearOrg(Empresa &e, Cadena cargo);
 // Inicializa la empresa y crea el primer cargo de la empresa.
 // Originalmente la misma debería  estar vacía, en otro caso la operación quedará sin efecto. 

@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "definiciones.h": "c"
+        "definiciones.h": "c",
+        "ostream": "c"
     }
 }

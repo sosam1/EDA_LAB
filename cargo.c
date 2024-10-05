@@ -20,3 +20,7 @@ Cargo CrearNuevoCargo(Cadena nombre) {
     }
     return c;
 }
+
+Cadena ObtenerNombreCargo(Cargo c) {
+    return c->nombre_cargo;
+}
