@@ -25,17 +25,12 @@ Empresa CrearEmpresa(Cargo primerCargo) {
     return e;
 }
 
-TipoRet CrearOrg(Empresa &e, Cadena cargo){
+TipoRet CrearOrg(Empresa &e, Cadena cargo) {
 // Inicializa la empresa y crea el primer cargo de la empresa.
 // Originalmente la misma debería  estar vacía, en otro caso la operación quedará sin efecto. 
-	if(e != NULL){
-		return ERROR;
-	}
-	else{
-		Cargo primerCargo = CrearNuevoCargo(cargo);
-		e = CrearEmpresa(primerCargo);
-		return OK;
-	}
+	Cargo primerCargo = CrearNuevoCargo(cargo);
+	e = CrearEmpresa(primerCargo);
+	return OK;
 }
 
 TipoRet EliminarOrg(Empresa &e){
@@ -115,4 +110,3 @@ TipoRet ListarSuperCargos (Empresa e, Cadena cargo){
 // Lista todas los cargos que anteceden, en la jerarquía, al cargo de nombre cargo.
 	return NO_IMPLEMENTADA;
 }
-

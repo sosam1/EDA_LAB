@@ -9,6 +9,7 @@
 // Definiciones generales del proyecto (constantes, etc).
 
 #define MAX_COMANDO 50
+#define MAX_NOMBRE_CARGO 25
 
 enum tipo_retorno{OK, ERROR, NO_IMPLEMENTADA};
 typedef enum tipo_retorno TipoRet;

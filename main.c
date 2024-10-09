@@ -13,16 +13,14 @@
 
 using namespace std;
 
-
-int main (){
-	Empresa e = NULL;
+int main() {
+	Empresa e;
 	bool creado = false;
 	char * comando = new (char[MAX_COMANDO]);
 	char * pch, * pch1, * pch2, *pch3;
 	TipoRet ret;
 	bool ejecutado = false;
 	bool salir = false;
-
 	cout << "\tCrearOrg(cargo)\n";
 	cout << "\tEliminarOrg()\n";
 	cout << "\tNuevoCargo(cargoPadre, nuevoCargo)\n";
@@ -36,9 +34,7 @@ int main (){
 	cout << "\tListarSuperCargos(cargo)\n";
 	cout << "\tSalir\n\n";
 	
-	
 	do{
-
 		cout << "> ";
 		fflush( stdin );
 		ejecutado = false;
@@ -55,18 +51,23 @@ int main (){
 						ret = CrearOrg(e, pch);
 						ejecutado = true;
 						creado = true;
-					}else
+					}
+					else
 						cout << " - ERROR: para ejecutar el comando el organigrama NO debe estar creado.\n";
-				}else
+				}
+				else
 					cout << " - ERROR: Faltan Parametros.\n";
-			}else if (strcasecmp (pch, "EliminarOrg") == 0){
+			}
+			else if (strcasecmp (pch, "EliminarOrg") == 0){
 				if (creado){
 					ret = EliminarOrg(e);
 					ejecutado = true;
 					creado = false;
-				}else
+				}
+				else
 					cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
-			}else if (strcasecmp (pch, "NuevoCargo") == 0){
+			}
+			else if (strcasecmp (pch, "NuevoCargo") == 0){
 				pch = strtok (NULL, "( ,)\n");
 				if (pch != NULL){
 					pch1 = strtok (NULL, "( ,)\n");
@@ -74,35 +75,46 @@ int main (){
 						if (creado){
 							ret = NuevoCargo(e, pch, pch1);
 							ejecutado = true;
-						}else
+						}
+						else
 							cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
-					}else
+					}
+					else
 						cout << " - ERROR: Faltan Parametros.\n";
-				}else
+				}
+				else
 					cout << " - ERROR: Faltan Parametros.\n";
-			}else if (strcasecmp (pch, "EliminarCargo") == 0){
+			}
+			else if (strcasecmp (pch, "EliminarCargo") == 0){
 				pch = strtok (NULL, "( ,)\n");
 				if (pch != NULL){
 					if (creado){
 						ret = EliminarCargo(e, pch);
 						ejecutado = true;
-					}else
+					}
+					else
 						cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
-				}else
+				}
+				else
 					cout << " - ERROR: Faltan Parametros.\n";
-			}else if (strcasecmp (pch, "ListarCargosAlf") == 0){
+			}
+			else if (strcasecmp (pch, "ListarCargosAlf") == 0){
 				if (creado){
 					ret = ListarCargosAlf(e);
 					ejecutado = true;
-				}else
+				}
+				else
 					cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
-			}else if (strcasecmp (pch, "ListarJerarquia") == 0){
+			}
+			else if (strcasecmp (pch, "ListarJerarquia") == 0){
 				if (creado){
 					ret = ListarJerarquia(e);
 					ejecutado = true;
-				}else
+				}
+				else
 					cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
-			}else if (strcasecmp (pch, "AsignarPersona") == 0){
+			}
+			else if (strcasecmp (pch, "AsignarPersona") == 0){
 				pch = strtok (NULL, "( ,)\n");
 				if (pch != NULL){
 					pch1 = strtok (NULL, "( ,)\n");
@@ -112,21 +124,27 @@ int main (){
 							if (creado){
 								ret = AsignarPersona (e, pch, pch2, pch1);
 								ejecutado = true;
-							}else
+							}
+							else
 								cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
-						}else
+						}
+						else
 							cout << " - ERROR: Faltan Parametros.\n";
-					}else
+					}
+					else
 						cout << " - ERROR: Faltan Parametros.\n";
-				}else
+				}
+				else
 					cout << " - ERROR: Faltan Parametros.\n";
-			}else if (strcasecmp (pch, "EliminarPersona") == 0){
+			}
+			else if (strcasecmp (pch, "EliminarPersona") == 0){
 				pch = strtok (NULL, "( ,)\n");
 				if (pch != NULL){
 					if (creado){
 						ret = EliminarCargo(e, pch);
 						ejecutado = true;
-					}else
+					}
+					else
 						cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
 				}
 				else
@@ -134,14 +152,14 @@ int main (){
 			}
 			else if (strcasecmp (pch, "ReasignarPersona") == 0){
 				pch = strtok (NULL, "( ,)\n");
-				if (pch != NULL)
-				{
+				if (pch != NULL) {
 					pch1 = strtok (NULL, "( ,)\n");
 					if (pch1 != NULL){
 						if (creado){
 							ret = ReasignarPersona(e, pch, pch1);
 							ejecutado = true;
-						}else
+						}
+						else
 							cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
 					}
 					else
@@ -154,7 +172,8 @@ int main (){
 					if (creado){
 						ret = ListarPersonas(e, pch);
 						ejecutado = true;
-					}else
+					}
+					else
 						cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
 				}
 				else
@@ -166,8 +185,9 @@ int main (){
 					if (creado){
 						ret = ListarSuperCargos(e, pch);
 						ejecutado = true;
-					}else
-							cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
+					}
+					else
+						cout << " - ERROR: para ejecutar el comando el organigrama debe estar creado.\n";
 				}
 				else
 					cout << " - ERROR: Faltan Parametros.\n";
@@ -185,7 +205,8 @@ int main (){
 					cout << " - NO IMPLEMENTADA\n";
 			}
 		}
-	}while (!salir);
+	}
+	while (!salir);
 	cout << "\n\n - CHAUU!!!!\n";
 
 	if (creado)

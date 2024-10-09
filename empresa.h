@@ -66,5 +66,3 @@ TipoRet ListarSuperCargos (Empresa e, Cadena cargo);
 // Lista todas los cargos que anteceden, en la jerarquía, al cargo de nombre cargo. 
 
 #endif
-
-
