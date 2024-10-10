@@ -12,12 +12,14 @@
 using namespace std;
 
 struct nodo_empresa{
-	// aquí deben figurar los campos que usted considere necesarios para manipular el organigrama.
-	// Se deberan crear nuevos modulos e incluirlos.
+// aquí deben figurar los campos que usted considere necesarios para manipular el organigrama.
+// Se deberan crear nuevos modulos e incluirlos.
 	Cargo cargo;
 };
 
 Empresa CrearEmpresa(Cargo primerCargo) {
+// Crea la empresa con su cargo raiz
+// pre: la empresa debe estar vacia.
     Empresa e = new(nodo_empresa);
     if (e != NULL) {
         e->cargo = primerCargo;
@@ -35,14 +37,42 @@ TipoRet CrearOrg(Empresa &e, Cadena cargo) {
 
 TipoRet EliminarOrg(Empresa &e){
 // Eliminar el organigrama, elimina toda la estructura del organigrama, liberando la memoria asignada.
-	// Verificar que la empresa no sea nula
+// Verificar que la empresa no sea nula
     return NO_IMPLEMENTADA;
 }
 
 TipoRet NuevoCargo(Empresa &e, Cadena cargoPadre, Cadena nuevoCargo){
 // Insertar un nuevo cargo como dependiente de otro ya existente.
 // El nuevo cargo no debe existir en el sistema.
-	return NO_IMPLEMENTADA;
+// PRE: la empresa debe estar creada
+	if(!cargoPertenece(e, cargoPadre)) {
+		return ERROR;
+	}
+	else { 
+		if(!cargoPertenece(e, nuevoCargo)) {
+			return ERROR;
+		} 
+		else {
+			Cargo aux = new(nodo_cargo); 
+			if(cargoPadre->ph == NULL) { //si no tiene ningun hijo creamos el cargo ahi
+				cargoPadre->ph = aux;
+				aux->nombre_cargo = NuevoCargo;
+				aux->ph = NULL;
+				aux->sh = NULL;
+			}
+			else {
+				Cargo iter = cargoPadre->ph->sh;
+				while(iter != NULL) {
+					iter = iter->sh;
+				}
+				iter = aux;
+				aux->nombre_cargo = NuevoCargo;
+				aux->ph = NULL;
+				aux->sh = NULL;
+			}
+		}
+	}
+	return OK;
 }
 
 TipoRet EliminarCargo(Empresa &e, Cadena cargo){

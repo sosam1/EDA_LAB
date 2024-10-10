@@ -28,3 +28,11 @@ Cargo CrearNuevoCargo(Cadena nombre) {
 Cadena ObtenerNombreCargo(Cargo c) {
     return c->nombre_cargo;
 }
+
+bool cargoPertenece (Empresa e, Cadena nombre_cargo){
+// Retorna true si nombre_cargo pertenece a la empresa e
+	if (e == NULL)
+		return false;
+	else
+		return (cargoPertenece(e->ph, nombre_cargo) || cargoPertenece(e->sh, nombre_cargo));
+}
