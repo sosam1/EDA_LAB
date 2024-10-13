@@ -29,10 +29,33 @@ Cadena ObtenerNombreCargo(Cargo c) {
     return c->nombre_cargo;
 }
 
-bool cargoPertenece (Empresa e, Cadena nombre_cargo){
+bool cargoPertenece (Cargo x, Cadena nombre_cargo){
 // Retorna true si nombre_cargo pertenece a la empresa e
-	if (e == NULL)
+	if (x == NULL)
 		return false;
-	else
-		return (cargoPertenece(e->ph, nombre_cargo) || cargoPertenece(e->sh, nombre_cargo));
+	else if (strcmp(x->nombre_cargo, nombre_cargo) == 0){
+        return true;
+    } else {
+        return cargoPertenece(x->ph, nombre_cargo) || cargoPertenece(x->sh, nombre_cargo);
+    }
+}
+
+Cargo ObtenerCargo(Cargo c, Cadena nombre_cargo){
+    if (c == NULL)
+		return NULL;
+	else if (strcmp(c->nombre_cargo, nombre_cargo) == 0){
+        return c; // si el primer nodo coincide lo retorno
+    } else {
+        Cargo c1, c2; // uno para recorrer los segundos hermanos y otro los primer hijo
+        c1 = ObtenerCargo(c->sh, nombre_cargo);
+        c2 = ObtenerCargo(c->ph, nombre_cargo);
+
+        if(c1 != NULL){
+            return c1;
+        }else if(c2 != NULL){
+            return c2;
+        }else {
+            return NULL;
+        }
+    }
 }

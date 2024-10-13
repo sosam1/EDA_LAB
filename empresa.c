@@ -14,7 +14,7 @@ using namespace std;
 struct nodo_empresa{
 // aquí deben figurar los campos que usted considere necesarios para manipular el organigrama.
 // Se deberan crear nuevos modulos e incluirlos.
-	Cargo cargo;
+	Cargo cargo_raiz;
 };
 
 Empresa CrearEmpresa(Cargo primerCargo) {
@@ -22,7 +22,7 @@ Empresa CrearEmpresa(Cargo primerCargo) {
 // pre: la empresa debe estar vacia.
     Empresa e = new(nodo_empresa);
     if (e != NULL) {
-        e->cargo = primerCargo;
+        e->cargo_raiz = primerCargo;
     }
     return e;
 }
@@ -45,33 +45,29 @@ TipoRet NuevoCargo(Empresa &e, Cadena cargoPadre, Cadena nuevoCargo){
 // Insertar un nuevo cargo como dependiente de otro ya existente.
 // El nuevo cargo no debe existir en el sistema.
 // PRE: la empresa debe estar creada
-	if(!cargoPertenece(e, cargoPadre)) {
+	if(!cargoPertenece(e->cargo_raiz, cargoPadre)) {
 		return ERROR;
 	}
 	else { 
-		if(!cargoPertenece(e, nuevoCargo)) {
+		if(cargoPertenece(e->cargo_raiz, nuevoCargo)) { //si existe el cargo damos error
 			return ERROR;
 		} 
 		else {
-			Cargo aux = new(nodo_cargo); 
-			if(cargoPadre->ph == NULL) { //si no tiene ningun hijo creamos el cargo ahi
-				cargoPadre->ph = aux;
-				aux->nombre_cargo = NuevoCargo;
-				aux->ph = NULL;
-				aux->sh = NULL;
+			Cargo aux = CrearNuevoCargo(nuevoCargo);
+			Cargo padre = ObtenerCargo(e->cargo_raiz, cargoPadre); // busca el nodo del cargo en el arbol
+
+			if(padre->ph == NULL) { //si no tiene ningun hijo creamos el cargo ahi
+				padre->ph = aux;
 			}
 			else {
-				Cargo iter = cargoPadre->ph->sh;
-				while(iter != NULL) {
+				Cargo iter = padre->ph;
+				while(iter->sh != NULL) {
 					iter = iter->sh;
 				}
-				iter = aux;
-				aux->nombre_cargo = NuevoCargo;
-				aux->ph = NULL;
-				aux->sh = NULL;
-			}
+				iter->sh = aux;
+			} 
 		}
-	}
+	} 
 	return OK;
 }
 
@@ -91,8 +87,8 @@ TipoRet ListarCargosAlf(Empresa e){
         return ERROR;
     }
     // Imprimir el único cargo que debería existir por ahora
-    if (e->cargo != NULL) {
-        cout << "Cargo: " << ObtenerNombreCargo(e->cargo) << endl;
+    if (e->cargo_raiz != NULL) {
+        cout << "Cargo: " << ObtenerNombreCargo(e->cargo_raiz) << endl;
         return OK;
     } else {
         return ERROR;

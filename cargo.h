@@ -10,4 +10,8 @@ Cargo CrearNuevoCargo(Cadena nombre);
 
 Cadena ObtenerNombreCargo(Cargo c);
 
+bool cargoPertenece (Cargo x, Cadena nombre_cargo);
+
+Cargo ObtenerCargo(Cargo c, Cadena nombre_cargo);
+
 #endif
