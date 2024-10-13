@@ -14,4 +14,8 @@ bool cargoPertenece (Cargo x, Cadena nombre_cargo);
 
 Cargo ObtenerCargo(Cargo c, Cadena nombre_cargo);
 
+Cargo& ObtenerPH(Cargo x);
+
+Cargo& ObtenerSH(Cargo x);
+
 #endif

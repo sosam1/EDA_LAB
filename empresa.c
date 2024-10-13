@@ -56,15 +56,15 @@ TipoRet NuevoCargo(Empresa &e, Cadena cargoPadre, Cadena nuevoCargo){
 			Cargo aux = CrearNuevoCargo(nuevoCargo);
 			Cargo padre = ObtenerCargo(e->cargo_raiz, cargoPadre); // busca el nodo del cargo en el arbol
 
-			if(padre->ph == NULL) { //si no tiene ningun hijo creamos el cargo ahi
-				padre->ph = aux;
+			if(ObtenerPH(padre) == NULL) { //si no tiene ningun hijo creamos el cargo ahi
+				ObtenerPH(padre) = aux;
 			}
 			else {
-				Cargo iter = padre->ph;
-				while(iter->sh != NULL) {
-					iter = iter->sh;
+				Cargo iter = ObtenerPH(padre);
+				while(ObtenerSH(iter) != NULL) {
+					iter = ObtenerSH(iter);
 				}
-				iter->sh = aux;
+				ObtenerSH(iter) = aux;
 			} 
 		}
 	} 
@@ -89,6 +89,7 @@ TipoRet ListarCargosAlf(Empresa e){
     // Imprimir el único cargo que debería existir por ahora
     if (e->cargo_raiz != NULL) {
         cout << "Cargo: " << ObtenerNombreCargo(e->cargo_raiz) << endl;
+		cout << "Cargo: " << ObtenerNombreCargo(ObtenerPH(e->cargo_raiz)) << endl;
         return OK;
     } else {
         return ERROR;
