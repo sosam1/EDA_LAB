@@ -74,7 +74,25 @@ Cargo& ObtenerSH(Cargo x){
 
 void arbol_imprimir_tree_aux(Cargo x){
     if (x != NULL){
+       
         cout << ObtenerNombreCargo(x) << endl;
+
+        // Imprimir PH si existe
+        if (ObtenerPH(x) != NULL) {
+            cout << " - PH: " << ObtenerNombreCargo(ObtenerPH(x));
+        } else {
+            cout << " - PH: NULL";
+        }
+
+        // Imprimir SH si existe
+        if (ObtenerSH(x) != NULL) {
+            cout << " - SH: " << ObtenerNombreCargo(ObtenerSH(x));
+        } else {
+            cout << " - SH: NULL";
+        }
+
+        cout << endl;
+
         arbol_imprimir_tree_aux(ObtenerPH(x));
         arbol_imprimir_tree_aux(ObtenerSH(x));
     }
