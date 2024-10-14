@@ -18,4 +18,6 @@ Cargo& ObtenerPH(Cargo x);
 
 Cargo& ObtenerSH(Cargo x);
 
+void arbol_imprimir_tree_aux(Cargo x);
+
 #endif

@@ -71,3 +71,11 @@ Cargo& ObtenerPH(Cargo x){
 Cargo& ObtenerSH(Cargo x){
     return x->sh;
 }
+
+void arbol_imprimir_tree_aux(Cargo x){
+    if (x != NULL){
+        cout << ObtenerNombreCargo(x) << endl;
+        arbol_imprimir_tree_aux(ObtenerPH(x));
+        arbol_imprimir_tree_aux(ObtenerSH(x));
+    }
+}

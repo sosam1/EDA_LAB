@@ -83,17 +83,15 @@ TipoRet EliminarCargo(Empresa &e, Cadena cargo){
 TipoRet ListarCargosAlf(Empresa e){
 // Listar todos los cargos ordenados alfabéticamente.
 // Lista todos los cargos de la empresa ordenados alfabéticamente por nombre del cargo. 
-	if (e == NULL) {
+    if (e == NULL) {
         return ERROR;
     }
-    // Imprimir el único cargo que debería existir por ahora
-    if (e->cargo_raiz != NULL) {
-        cout << "Cargo: " << ObtenerNombreCargo(e->cargo_raiz) << endl;
-		cout << "Cargo: " << ObtenerNombreCargo(ObtenerPH(e->cargo_raiz)) << endl;
-        return OK;
-    } else {
-        return ERROR;
-    }
+
+	if (e->cargo_raiz != NULL) {
+		arbol_imprimir_tree_aux(e->cargo_raiz);
+	}
+
+	return OK;
 }
 
 TipoRet ListarJerarquia(Empresa e){
