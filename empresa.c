@@ -38,7 +38,15 @@ TipoRet CrearOrg(Empresa &e, Cadena cargo) {
 TipoRet EliminarOrg(Empresa &e){
 // Eliminar el organigrama, elimina toda la estructura del organigrama, liberando la memoria asignada.
 // Verificar que la empresa no sea nula
-    return NO_IMPLEMENTADA;
+	if(e == NULL) {
+		return ERROR;
+	}
+	else {
+		EliminarCargos(e->cargo_raiz);
+		delete e;
+	}
+
+    return OK;
 }
 
 TipoRet NuevoCargo(Empresa &e, Cadena cargoPadre, Cadena nuevoCargo){
@@ -88,7 +96,9 @@ TipoRet ListarCargosAlf(Empresa e){
     }
 
 	if (e->cargo_raiz != NULL) {
-		arbol_imprimir_tree_aux(e->cargo_raiz);
+		Lista l = NULL;
+		l = InsertarCargosALista(e->cargo_raiz, l); //recorro arbol y guardo todos los cargos en una lista
+		OrdenarAlfabetico(l); // ordeno la lista en cuestion
 	}
 
 	return OK;

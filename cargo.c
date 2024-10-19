@@ -1,6 +1,6 @@
 #include "cargo.h"
 #include "definiciones.h"
-#include <string.h> ///////
+#include <string.h> 
 
 #include <iostream>
 
@@ -12,6 +12,12 @@ struct nodo_cargo {
     Cargo ph;
     Cargo sh;
 };
+
+struct nodo_lista{
+	Lista sig;
+	Cadena nombre_cargo;
+};
+
 
 // Implementación de la función que crea un nuevo cargo
 Cargo CrearNuevoCargo(Cadena nombre) {
@@ -75,9 +81,16 @@ Cargo& ObtenerSH(Cargo x){
 void arbol_imprimir_tree_aux(Cargo x){
     if (x != NULL){
        
-        cout << ObtenerNombreCargo(x) << endl;
+        /* cout << ObtenerNombreCargo(x) << endl; */
+        Lista l = NULL; 
+        InsertarCargosALista(x, l);
 
-        // Imprimir PH si existe
+        while(l != NULL) {
+        cout << l->nombre_cargo << endl;
+        l = l->sig;
+    }
+
+        /* // Imprimir PH si existe
         if (ObtenerPH(x) != NULL) {
             cout << " - PH: " << ObtenerNombreCargo(ObtenerPH(x));
         } else {
@@ -89,11 +102,76 @@ void arbol_imprimir_tree_aux(Cargo x){
             cout << " - SH: " << ObtenerNombreCargo(ObtenerSH(x));
         } else {
             cout << " - SH: NULL";
+        } */
+
+       /*  cout << endl; */
+
+       /*  arbol_imprimir_tree_aux(ObtenerPH(x));
+        arbol_imprimir_tree_aux(ObtenerSH(x)); */
+    }
+}
+
+Lista InsertarCargosALista(Cargo x, Lista &l){ //necesario trabajar con la lista original
+    if (x != NULL) {
+        Lista aux = new nodo_lista();
+        aux->nombre_cargo = x->nombre_cargo;
+
+        if(l==NULL) { //solamente va pasar la primera vez
+            aux->sig = NULL;
+            l = aux;
+            InsertarCargosALista(ObtenerPH(x), l); //este nodo no puede tener hermanos pq es el primero
+        }
+        else {
+            aux->sig = l; //pongo el nuevo nodo en el primer lugar de la lista
+            l = aux; // para que apunte al primer elemento de la lista
+            InsertarCargosALista(x->ph, l);
+            InsertarCargosALista(x->sh, l);
+        }        
+    }
+
+    return l;
+}
+
+void OrdenarAlfabetico(Lista &l) {
+
+    if(l==NULL){
+        return;
+    } 
+    else{
+        bool huboCambio = false;
+        Lista actual = l;
+
+        while(actual->sig != NULL){
+            if (strcmp(actual->nombre_cargo, actual->sig->nombre_cargo) > 0){
+                Cadena aux = actual->nombre_cargo;
+                actual->nombre_cargo = actual->sig->nombre_cargo;
+                actual->sig->nombre_cargo = aux;
+
+                huboCambio = true;
+            } 
+            actual = actual->sig;
         }
 
-        cout << endl;
+        if(huboCambio){
+            OrdenarAlfabetico(l);
+        }
+    }
 
-        arbol_imprimir_tree_aux(ObtenerPH(x));
-        arbol_imprimir_tree_aux(ObtenerSH(x));
+    //printf de la lista ordenada
+    while(l != NULL){
+        printf("%s\n", l->nombre_cargo);
+        l=l->sig;
+    }
+
+} 
+
+void EliminarCargos(Cargo primer_cargo){
+    if (primer_cargo != NULL) {
+        // Llamar recursivamente a los hijos
+        EliminarCargos(primer_cargo->ph); 
+        EliminarCargos(primer_cargo->sh); 
+
+        delete[] primer_cargo->nombre_cargo; // liberar la cadena
+        delete primer_cargo; // liberar el nodo
     }
 }

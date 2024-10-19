@@ -5,6 +5,8 @@
 
 typedef struct nodo_cargo * Cargo;
 
+typedef struct nodo_lista * Lista;
+
 // Funciones para manipular cargos
 Cargo CrearNuevoCargo(Cadena nombre);
 
@@ -19,5 +21,11 @@ Cargo& ObtenerPH(Cargo x);
 Cargo& ObtenerSH(Cargo x);
 
 void arbol_imprimir_tree_aux(Cargo x);
+
+Lista InsertarCargosALista(Cargo x, Lista &l);
+
+void OrdenarAlfabetico(Lista &l);
+
+void EliminarCargos(Cargo primer_cargo);
 
 #endif
