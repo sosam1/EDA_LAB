@@ -1,4 +1,5 @@
 #include "cargo.h"
+#include "persona.h"
 #include "definiciones.h"
 #include <string.h> 
 
@@ -6,11 +7,11 @@
 
 using namespace std;
 
-// Estructura del nodo_cargo
 struct nodo_cargo {
     Cadena nombre_cargo;
     Cargo ph;
     Cargo sh;
+    ListaPersona personas;
 };
 
 struct nodo_lista{
@@ -27,13 +28,14 @@ Cargo CrearNuevoCargo(Cadena nombre) {
         strcpy (c->nombre_cargo, nombre);
         c->ph = NULL;
         c->sh = NULL;
+        c->personas = NULL;
     }
     return c;
-}
+};
 
 Cadena ObtenerNombreCargo(Cargo c) {
     return c->nombre_cargo;
-}
+};
 
 bool cargoPertenece(Cargo x, Cadena nombre_cargo){
 // Retorna true si nombre_cargo pertenece a la empresa e
@@ -45,7 +47,7 @@ bool cargoPertenece(Cargo x, Cadena nombre_cargo){
     else {
         return cargoPertenece(x->ph, nombre_cargo) || cargoPertenece(x->sh, nombre_cargo);
     }
-}
+};
 
 Cargo ObtenerCargo(Cargo c, Cadena nombre_cargo){
     if (c == NULL)
@@ -68,48 +70,27 @@ Cargo ObtenerCargo(Cargo c, Cadena nombre_cargo){
             return NULL;
         }
     }
-}
+};
 
 Cargo& ObtenerPH(Cargo x){
     return x->ph;
-}
+};
 
 Cargo& ObtenerSH(Cargo x){
     return x->sh;
-}
+};
 
 void arbol_imprimir_tree_aux(Cargo x){
     if (x != NULL){
-       
-        /* cout << ObtenerNombreCargo(x) << endl; */
         Lista l = NULL; 
         InsertarCargosALista(x, l);
 
         while(l != NULL) {
         cout << l->nombre_cargo << endl;
         l = l->sig;
-    }
-
-        /* // Imprimir PH si existe
-        if (ObtenerPH(x) != NULL) {
-            cout << " - PH: " << ObtenerNombreCargo(ObtenerPH(x));
-        } else {
-            cout << " - PH: NULL";
         }
-
-        // Imprimir SH si existe
-        if (ObtenerSH(x) != NULL) {
-            cout << " - SH: " << ObtenerNombreCargo(ObtenerSH(x));
-        } else {
-            cout << " - SH: NULL";
-        } */
-
-       /*  cout << endl; */
-
-       /*  arbol_imprimir_tree_aux(ObtenerPH(x));
-        arbol_imprimir_tree_aux(ObtenerSH(x)); */
     }
-}
+};
 
 Lista InsertarCargosALista(Cargo x, Lista &l){ //necesario trabajar con la lista original
     if (x != NULL) {
@@ -128,12 +109,10 @@ Lista InsertarCargosALista(Cargo x, Lista &l){ //necesario trabajar con la lista
             InsertarCargosALista(x->sh, l);
         }        
     }
-
     return l;
-}
+};
 
 void OrdenarAlfabetico(Lista &l) {
-
     if(l==NULL){
         return;
     } 
@@ -162,8 +141,7 @@ void OrdenarAlfabetico(Lista &l) {
         printf("%s\n", l->nombre_cargo);
         l=l->sig;
     }
-
-} 
+};
 
 void EliminarCargos(Cargo primer_cargo){
     if (primer_cargo != NULL) {
@@ -174,4 +152,29 @@ void EliminarCargos(Cargo primer_cargo){
         delete[] primer_cargo->nombre_cargo; // liberar la cadena
         delete primer_cargo; // liberar el nodo
     }
-}
+};
+
+bool PersonaExisteEnArbol(Cargo c, Cadena ci){
+    if(c==NULL){
+        return false;
+    }
+    ListaPersona personas = c->personas;
+
+    while(personas != NULL){
+        if(strcmp(ObtenerCi(ObternerSig(personas)), ci) == 0){
+            return true;
+        }else{
+            personas = ObternerSig(personas);
+        }
+    }
+
+    return PersonaExisteEnArbol(c->ph, ci) || PersonaExisteEnArbol(c->sh, ci);
+};
+
+void InsertarPersonaACargo(Cargo cargo_raiz, Cadena c, Cadena nom, Cadena ci){
+    if(!PersonaExisteEnArbol(cargo_raiz, ci)){
+        Cargo cargo_para_asignar = ObtenerCargo(cargo_raiz, c); //lo pasamos de cargo a Cadena y luego obtenemos el cargo
+        AgregarPersona(cargo_para_asignar->personas,ci, nom);
+    }
+};
+

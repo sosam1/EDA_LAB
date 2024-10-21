@@ -116,7 +116,14 @@ TipoRet AsignarPersona(Empresa &e, Cadena cargo, Cadena nom, Cadena ci){
 // Asigna una persona de nombre nom  y cédula de identidad ci al cargo cargo
 // siempre que el cargo exista en la empresa y esa persona no este asignada a
 // ese u otro cargo, en caso contrario la operación quedará sin efecto.
-	return NO_IMPLEMENTADA;
+	if(!cargoPertenece(e->cargo_raiz, cargo)){
+		return ERROR;
+	}
+	if(PersonaExisteEnArbol(e->cargo_raiz, ci)){
+		return ERROR;
+	}
+	InsertarPersonaACargo(e->cargo_raiz, cargo, nom, ci);
+	return OK;  
 }
 
 TipoRet EliminarPersona(Empresa &e, Cadena ci){

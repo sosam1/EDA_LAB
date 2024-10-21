@@ -2,6 +2,7 @@
 #define CARGO_H
 
 #include "definiciones.h" // Definición de Cadena y otros tipos usados
+#include "persona.h"
 
 typedef struct nodo_cargo * Cargo;
 
@@ -27,5 +28,9 @@ Lista InsertarCargosALista(Cargo x, Lista &l);
 void OrdenarAlfabetico(Lista &l);
 
 void EliminarCargos(Cargo primer_cargo);
+
+bool PersonaExisteEnArbol(Cargo c, Cadena ci);
+
+void InsertarPersonaACargo(Cargo cargo_raiz, Cadena c, Cadena nom, Cadena ci);
 
 #endif
