@@ -178,3 +178,11 @@ void InsertarPersonaACargo(Cargo cargo_raiz, Cadena c, Cadena nom, Cadena ci){
         AgregarPersona(cargo_para_asignar->personas,ci, nom);
     }
 };
+
+void ImprimirPersonasEnUnCargo(Cargo cargo_raiz, Cadena cargo_buscado){
+    Cargo cargo_a_listar = ObtenerCargo(cargo_raiz, cargo_buscado);
+    ListaPersona l = cargo_a_listar->personas;
+    cout << "Listado de personas asignadas a " << cargo_a_listar->nombre_cargo << ":" << endl;
+    cout << "--------------------------------------" << endl;
+    ImprimirPersonas(l);
+};

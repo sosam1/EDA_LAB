@@ -22,5 +22,6 @@ bool PersonaExisteEnCargo(ListaPersona p, Cadena ci);
 
 void AgregarPersona(ListaPersona &l, Cadena ci, Cadena nom);
 
+void ImprimirPersonas(ListaPersona l);
 
 #endif

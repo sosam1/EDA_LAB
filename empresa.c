@@ -45,7 +45,6 @@ TipoRet EliminarOrg(Empresa &e){
 		EliminarCargos(e->cargo_raiz);
 		delete e;
 	}
-
     return OK;
 }
 
@@ -143,8 +142,9 @@ TipoRet ReasignarPersona(Empresa &e, Cadena cargo, Cadena ci){
 
 TipoRet ListarPersonas(Empresa e, Cadena cargo){
 // Dado un cargo listar las personas asignadas al mismo ordenadas por fecha de alta a la empresa. 
-// Lista todas las personas asignadas al cargo de nombre cargo. 
-	return NO_IMPLEMENTADA;
+// Lista todas las personas asignadas al cargo de nombre cargo.
+	ImprimirPersonasEnUnCargo(e->cargo_raiz, cargo);
+	return OK;
 }
 
 TipoRet ListarSuperCargos (Empresa e, Cadena cargo){

@@ -33,4 +33,6 @@ bool PersonaExisteEnArbol(Cargo c, Cadena ci);
 
 void InsertarPersonaACargo(Cargo cargo_raiz, Cadena c, Cadena nom, Cadena ci);
 
+void ImprimirPersonasEnUnCargo(Cargo cargo_raiz, Cadena cargo_buscado);
+
 #endif

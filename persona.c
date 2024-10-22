@@ -67,3 +67,14 @@ void AgregarPersona(ListaPersona &l, Cadena ci, Cadena nom){
     nodo_persona->sig = l;
     l = nodo_persona;
 };
+
+void ImprimirPersonas(ListaPersona l){
+    if(l==NULL){
+        return;
+    }
+    while(l!=NULL){
+        Persona p = ObtenerPersona(l);
+        cout << "Nombre: " << p->ci << " CI: " << p->nom << endl; //el main los pasa al reves
+        l=l->sig;
+    }
+};
