@@ -14,11 +14,13 @@ Cadena ObtenerCi(Persona p);
 
 Cadena ObtenerNom(Persona p);
 
-Persona ObternerSig(Persona p);
+ListaPersona ObtenerSig(ListaPersona l);
+
+Persona ObtenerPersona(ListaPersona l);
 
 bool PersonaExisteEnCargo(ListaPersona p, Cadena ci);
 
-Persona AgregarPersona(ListaPersona l, Cadena ci, Cadena nom);
+void AgregarPersona(ListaPersona &l, Cadena ci, Cadena nom);
 
 
 #endif

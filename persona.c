@@ -31,8 +31,12 @@ Cadena ObtenerNom(Persona p){
     return p->nom;
 };
 
-Persona ObternerSig(Persona p){
-    return p->sig;
+ListaPersona ObtenerSig(ListaPersona l){
+    return l->sig;
+}
+
+Persona ObtenerPersona(ListaPersona l){
+    return l->persona;
 }
 
 bool PersonaExisteEnCargo(ListaPersona p, Cadena ci){
@@ -47,14 +51,19 @@ bool PersonaExisteEnCargo(ListaPersona p, Cadena ci){
     }
 }; 
 
-Persona AgregarPersona(ListaPersona l, Cadena ci, Cadena nom){
+void AgregarPersona(ListaPersona &l, Cadena ci, Cadena nom){
     Persona p = new(tipo_persona);
-    p->ci = ci;
-    p->nom = nom;
+     // Reservar memoria para las cadenas
+    p->ci = new char[strlen(ci) + 1];
+    p->nom = new char[strlen(nom) + 1];
+
+    // Copiar los valores de las cadenas
+    strcpy(p->ci, ci);
+    strcpy(p->nom, nom);
 
     ListaPersona nodo_persona = new(nodo_lista_persona);
     nodo_persona->persona = p;
 
-    nodo_persona = l;
-    l->sig = nodo_persona;
+    nodo_persona->sig = l;
+    l = nodo_persona;
 };

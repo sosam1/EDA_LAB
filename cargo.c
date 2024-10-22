@@ -161,10 +161,11 @@ bool PersonaExisteEnArbol(Cargo c, Cadena ci){
     ListaPersona personas = c->personas;
 
     while(personas != NULL){
-        if(strcmp(ObtenerCi(ObternerSig(personas)), ci) == 0){
+        cout << "Ci del pj: " << ObtenerCi(ObtenerPersona(personas)) << endl;
+        if(strcmp(ObtenerCi(ObtenerPersona(personas)), ci) == 0){
             return true;
         }else{
-            personas = ObternerSig(personas);
+            personas = ObtenerSig(personas);
         }
     }
 
@@ -177,4 +178,3 @@ void InsertarPersonaACargo(Cargo cargo_raiz, Cadena c, Cadena nom, Cadena ci){
         AgregarPersona(cargo_para_asignar->personas,ci, nom);
     }
 };
-
