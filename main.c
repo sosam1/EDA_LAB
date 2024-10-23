@@ -27,7 +27,7 @@ int main() {
 	cout << "\tEliminarCargo(cargo)\n";
 	cout << "\tListarCargosAlf()\n";
 	cout << "\tListarJerarquia()\n";
-	cout << "\tAsignarPersona(cargo, ci, nombre)\n";
+	cout << "\tAsignarPersona(cargo, nombre, ci)\n";
 	cout << "\tEliminarPersona(ci)\n";
 	cout << "\tReasignarPersona(cargo, ci)\n";
 	cout << "\tListarPersonas(cargo)\n";
@@ -122,7 +122,7 @@ int main() {
 						pch2 = strtok (NULL, "(,)\n");
 						if (pch2 != NULL){
 							if (creado){
-								ret = AsignarPersona (e, pch, pch2, pch1);
+								ret = AsignarPersona (e, pch, pch1, pch2);
 								ejecutado = true;
 							}
 							else

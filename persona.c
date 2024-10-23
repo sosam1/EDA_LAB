@@ -1,7 +1,6 @@
 #include "persona.h"
 #include "definiciones.h"
 #include <string.h> 
-
 #include <iostream>
 
 using namespace std;
@@ -49,7 +48,25 @@ bool PersonaExisteEnCargo(ListaPersona p, Cadena ci){
     }else{
         return PersonaExisteEnCargo(p->sig, ci);
     }
-}; 
+};
+
+ListaPersona SnocPersona(ListaPersona &l, Persona p){
+    ListaPersona nodo_persona = new(nodo_lista_persona);
+    nodo_persona->persona = p;
+    nodo_persona->sig = NULL;
+
+    if(l==NULL){
+        l=nodo_persona;
+        return l;
+    }else{
+        ListaPersona actual = l;
+        while(actual->sig != NULL){
+            actual = actual->sig;
+        }
+        actual->sig = nodo_persona;
+    }
+    return l;
+};
 
 void AgregarPersona(ListaPersona &l, Cadena ci, Cadena nom){
     Persona p = new(tipo_persona);
@@ -61,11 +78,7 @@ void AgregarPersona(ListaPersona &l, Cadena ci, Cadena nom){
     strcpy(p->ci, ci);
     strcpy(p->nom, nom);
 
-    ListaPersona nodo_persona = new(nodo_lista_persona);
-    nodo_persona->persona = p;
-
-    nodo_persona->sig = l;
-    l = nodo_persona;
+    SnocPersona(l, p);
 };
 
 void ImprimirPersonas(ListaPersona l){
@@ -74,7 +87,17 @@ void ImprimirPersonas(ListaPersona l){
     }
     while(l!=NULL){
         Persona p = ObtenerPersona(l);
-        cout << "Nombre: " << p->ci << " CI: " << p->nom << endl; //el main los pasa al reves
+        cout << "Nombre: " << p->nom << " CI: " << p->ci << endl;
         l=l->sig;
     }
+};
+
+void EliminarPersona(Persona p){
+    delete[] p->nom;
+    delete[] p->ci;
+    delete p;
+};
+
+void EliminaListaPersona(ListaPersona l){
+    delete l;
 };

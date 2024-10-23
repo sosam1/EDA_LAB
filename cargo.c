@@ -19,7 +19,6 @@ struct nodo_lista{
 	Cadena nombre_cargo;
 };
 
-
 // Implementación de la función que crea un nuevo cargo
 Cargo CrearNuevoCargo(Cadena nombre) {
     Cargo c = new(nodo_cargo);
@@ -143,6 +142,24 @@ void OrdenarAlfabetico(Lista &l) {
     }
 };
 
+void EliminarPersonasDeCargo(Cargo cargo){
+    if(cargo->personas != NULL){
+        ListaPersona actual = cargo->personas;
+        ListaPersona sig;
+
+        while(actual != NULL){
+            sig = ObtenerSig(actual);
+
+            EliminarPersona(ObtenerPersona(actual));
+
+            EliminaListaPersona(actual);
+
+            actual = sig;
+        }
+        cargo->personas = NULL;
+    }
+};
+
 void EliminarCargos(Cargo primer_cargo){
     if (primer_cargo != NULL) {
         // Llamar recursivamente a los hijos
@@ -158,14 +175,13 @@ bool PersonaExisteEnArbol(Cargo c, Cadena ci){
     if(c==NULL){
         return false;
     }
-    ListaPersona personas = c->personas;
+    ListaPersona p = c->personas;
 
-    while(personas != NULL){
-        cout << "Ci del pj: " << ObtenerCi(ObtenerPersona(personas)) << endl;
-        if(strcmp(ObtenerCi(ObtenerPersona(personas)), ci) == 0){
+    while(p != NULL){
+        if(strcmp(ObtenerCi(ObtenerPersona(p)), ci) == 0){
             return true;
         }else{
-            personas = ObtenerSig(personas);
+            p = ObtenerSig(p);
         }
     }
 
@@ -179,7 +195,7 @@ void InsertarPersonaACargo(Cargo cargo_raiz, Cadena c, Cadena nom, Cadena ci){
     }
 };
 
-void ImprimirPersonasEnUnCargo(Cargo cargo_raiz, Cadena cargo_buscado){
+void ImprimirPersonasEnUnCargo(Cargo cargo_raiz, Cadena cargo_buscado) {
     Cargo cargo_a_listar = ObtenerCargo(cargo_raiz, cargo_buscado);
     ListaPersona l = cargo_a_listar->personas;
     cout << "Listado de personas asignadas a " << cargo_a_listar->nombre_cargo << ":" << endl;

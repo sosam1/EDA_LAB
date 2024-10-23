@@ -52,7 +52,7 @@ TipoRet NuevoCargo(Empresa &e, Cadena cargoPadre, Cadena nuevoCargo){
 // Insertar un nuevo cargo como dependiente de otro ya existente.
 // El nuevo cargo no debe existir en el sistema.
 // PRE: la empresa debe estar creada
-	if(!cargoPertenece(e->cargo_raiz, cargoPadre)) {
+	if(!cargoPertenece(e->cargo_raiz, cargoPadre)) { //si el cargo padre no existe da error
 		return ERROR;
 	}
 	else { 
@@ -99,7 +99,6 @@ TipoRet ListarCargosAlf(Empresa e){
 		l = InsertarCargosALista(e->cargo_raiz, l); //recorro arbol y guardo todos los cargos en una lista
 		OrdenarAlfabetico(l); // ordeno la lista en cuestion
 	}
-
 	return OK;
 }
 
@@ -143,6 +142,9 @@ TipoRet ReasignarPersona(Empresa &e, Cadena cargo, Cadena ci){
 TipoRet ListarPersonas(Empresa e, Cadena cargo){
 // Dado un cargo listar las personas asignadas al mismo ordenadas por fecha de alta a la empresa. 
 // Lista todas las personas asignadas al cargo de nombre cargo.
+	if(!cargoPertenece(e->cargo_raiz, cargo)){
+		return ERROR;
+	}
 	ImprimirPersonasEnUnCargo(e->cargo_raiz, cargo);
 	return OK;
 }

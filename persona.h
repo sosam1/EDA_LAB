@@ -20,8 +20,14 @@ Persona ObtenerPersona(ListaPersona l);
 
 bool PersonaExisteEnCargo(ListaPersona p, Cadena ci);
 
+ListaPersona SnocPersona(ListaPersona &l, Persona p);
+
 void AgregarPersona(ListaPersona &l, Cadena ci, Cadena nom);
 
 void ImprimirPersonas(ListaPersona l);
+
+void EliminarPersona(Persona p);
+
+void EliminaListaPersona(ListaPersona l);
 
 #endif
