@@ -150,24 +150,26 @@ void EliminarPersonasDeCargo(Cargo cargo){
         while(actual != NULL){
             sig = ObtenerSig(actual);
 
+            cout << "Eliminando a: " << ObtenerNom(ObtenerPersona(actual)) << endl;
             EliminarPersona(ObtenerPersona(actual));
 
             EliminaListaPersona(actual);
 
             actual = sig;
         }
-        cargo->personas = NULL;
     }
 };
 
 void EliminarCargos(Cargo primer_cargo){
     if (primer_cargo != NULL) {
         // Llamar recursivamente a los hijos
+        EliminarPersonasDeCargo(primer_cargo);
         EliminarCargos(primer_cargo->ph); 
         EliminarCargos(primer_cargo->sh); 
 
         delete[] primer_cargo->nombre_cargo; // liberar la cadena
         delete primer_cargo; // liberar el nodo
+        primer_cargo = NULL;
     }
 };
 
@@ -202,3 +204,31 @@ void ImprimirPersonasEnUnCargo(Cargo cargo_raiz, Cadena cargo_buscado) {
     cout << "--------------------------------------" << endl;
     ImprimirPersonas(l);
 };
+
+Cargo BuscarCargoPorPersona(Cargo raiz, Cadena ci){
+    if(raiz==NULL){
+        return NULL;
+    }
+
+    ListaPersona l = raiz->personas;
+
+    while(l!=NULL){
+        if(strcmp(ObtenerCi(ObtenerPersona(l)), ci) == 0){
+            return raiz;
+        }
+        l = ObtenerSig(l);
+    }
+
+    //buscar en ph y sh
+    Cargo encontradoEnPH = BuscarCargoPorPersona(raiz->ph, ci); 
+    if (encontradoEnPH != NULL){
+        return encontradoEnPH;
+    }
+
+    return BuscarCargoPorPersona(raiz->sh, ci);
+};
+
+void EliminarPersonaDeCargo(Cargo raiz, Cadena ci){
+    Cargo cargo_donde_esta_perosna = BuscarCargoPorPersona(raiz, ci);
+    EliminarPersonaDeLista(cargo_donde_esta_perosna->personas, ci);
+}

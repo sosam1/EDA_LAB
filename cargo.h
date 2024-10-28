@@ -35,4 +35,8 @@ void InsertarPersonaACargo(Cargo cargo_raiz, Cadena c, Cadena nom, Cadena ci);
 
 void ImprimirPersonasEnUnCargo(Cargo cargo_raiz, Cadena cargo_buscado);
 
+Cargo BuscarCargoPorPersona(Cargo raiz, Cadena ci);
+
+void EliminarPersonaDeCargo(Cargo raiz, Cadena ci);
+
 #endif

@@ -84,7 +84,11 @@ TipoRet EliminarCargo(Empresa &e, Cadena cargo){
 // En otro caso la operación quedará sin efecto.
 // Si el cargo a eliminar posee subcargos, éstos deberán ser eliminados también, así como
 // las personas asociadas a cada uno de los cargos suprimidos.
-	return NO_IMPLEMENTADA;
+	if(!cargoPertenece(e->cargo_raiz, cargo)){
+		return ERROR;
+	}
+	EliminarCargos(ObtenerCargo(e->cargo_raiz, cargo));
+	return OK;
 }
 
 TipoRet ListarCargosAlf(Empresa e){
@@ -128,7 +132,13 @@ TipoRet EliminarPersona(Empresa &e, Cadena ci){
 // Eliminar una persona de un cargo.
 // Elimina una persona de cédula ci de la empresa siempre y cuando la misma exista,
 // en caso contrario la operación quedará sin efecto.
-	return NO_IMPLEMENTADA;
+	if(!PersonaExisteEnArbol(e->cargo_raiz, ci)){
+		return ERROR;
+	}
+
+	EliminarPersonaDeCargo(e->cargo_raiz, ci);
+
+	return OK;
 }
 
 TipoRet ReasignarPersona(Empresa &e, Cadena cargo, Cadena ci){

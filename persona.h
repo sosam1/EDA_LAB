@@ -30,4 +30,6 @@ void EliminarPersona(Persona p);
 
 void EliminaListaPersona(ListaPersona l);
 
+void EliminarPersonaDeLista(ListaPersona &lista, Cadena ci);
+
 #endif

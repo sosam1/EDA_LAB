@@ -101,3 +101,25 @@ void EliminarPersona(Persona p){
 void EliminaListaPersona(ListaPersona l){
     delete l;
 };
+
+void EliminarPersonaDeLista(ListaPersona &lista, Cadena ci) {
+    ListaPersona actual = lista;
+    ListaPersona anterior = NULL;
+
+    // Buscar el nodo que contiene la CI de la persona a eliminar
+    while (actual != NULL && strcmp(ObtenerCi(ObtenerPersona(actual)), ci) != 0) {
+        anterior = actual;
+        actual = actual->sig;
+    }
+
+    if (actual != NULL) { // Nodo encontrado
+        if (anterior == NULL) { // Si es el primer nodo de la lista
+            lista = actual->sig; // Reasignamos lista al siguiente nodo
+        } else {
+            anterior->sig = actual->sig; // Saltamos el nodo en la lista
+        }
+
+        EliminarPersona(ObtenerPersona(actual)); // Elimina los datos de la persona
+        EliminaListaPersona(actual); // Elimina el nodo
+    }
+}
