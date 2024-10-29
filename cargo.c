@@ -221,18 +221,6 @@ void EliminarPersonaDeCargo(Cargo raiz, Cadena ci){
     EliminarPersonaDeLista(cargo_donde_esta_perosna->personas, ci);
 }
 
-/* void arbol_imprimir_tree_aux(Cargo x){
-    if (x != NULL){
-        Lista l = NULL; 
-        InsertarCargosALista(x, l);
-
-        while(l != NULL) {
-        cout << l->nombre_cargo << endl;
-        l = l->sig;
-        }
-    }
-}; */
-
 void ImprimirConIdentacion(Cargo cargo, int nivel){
     for(int x=0; x<nivel; x++){
         cout << "\t";
@@ -246,6 +234,31 @@ void ListarCargosPorJerarquia(Cargo cargo_raiz, int nivel){
 
         ListarCargosPorJerarquia(cargo_raiz->ph, nivel+1);
         ListarCargosPorJerarquia(cargo_raiz->sh, nivel);
+    }
+}
+
+int ObtenerNivelDeCargo(Cargo cargo_raiz, Cadena cargo, int nivel){
+    if(cargo_raiz != NULL){
+        if(strcmp(cargo_raiz->nombre_cargo, cargo) == 0){
+            return nivel;
+        }else{
+                int nivel_ph = ObtenerNivelDeCargo(cargo_raiz->ph, cargo, nivel + 1);
+                if (nivel_ph != -1) { //-1 es el valor cuando no encuentra el nodo
+                    return nivel_ph; 
+                }
+                int nivel_sh = ObtenerNivelDeCargo(cargo_raiz->sh, cargo, nivel);
+                return nivel_sh;  
+            }
+    }
+}
+
+void ImprimirSuperCargos(Cargo cargo_raiz, Cadena cargo, int nivel_tope, int nivel_actual){
+    if(cargo_raiz != NULL){
+        if(nivel_actual < nivel_tope){
+            cout << cargo_raiz->nombre_cargo << endl;
+        }
+        ImprimirSuperCargos(cargo_raiz->ph, cargo, nivel_tope, nivel_actual+1);
+        ImprimirSuperCargos(cargo_raiz->sh, cargo, nivel_tope, nivel_actual);
     }
 
 }

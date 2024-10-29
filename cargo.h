@@ -21,8 +21,6 @@ Cargo& ObtenerPH(Cargo x);
 
 Cargo& ObtenerSH(Cargo x);
 
-/* void arbol_imprimir_tree_aux(Cargo x); */
-
 Lista InsertarCargosALista(Cargo x, Lista &l);
 
 void OrdenarAlfabetico(Lista &l);
@@ -42,5 +40,9 @@ void EliminarPersonaDeCargo(Cargo raiz, Cadena ci);
 void ImprimirConIdentacion(Cargo cargo, int nivel);
 
 void ListarCargosPorJerarquia(Cargo cargo_raiz, int nivel); 
+
+int ObtenerNivelDeCargo(Cargo cargo_raiz, Cadena cargo, int nivel);
+
+void ImprimirSuperCargos(Cargo cargo_raiz, Cadena cargo, int nivel_tope, int nivel_actual);
 
 #endif

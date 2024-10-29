@@ -158,8 +158,14 @@ TipoRet ListarPersonas(Empresa e, Cadena cargo){
 	return OK;
 }
 
-TipoRet ListarSuperCargos (Empresa e, Cadena cargo){
+TipoRet ListarSuperCargos(Empresa e, Cadena cargo){
 // Dado un cargo listar los cargos que lo anteceden.
 // Lista todas los cargos que anteceden, en la jerarquía, al cargo de nombre cargo.
-	return NO_IMPLEMENTADA;
+	if(!cargoPertenece(e->cargo_raiz, cargo)){
+		return ERROR;
+	}
+	int nivel_tope = ObtenerNivelDeCargo(e->cargo_raiz, cargo, 0);
+	ImprimirSuperCargos(e->cargo_raiz, cargo, nivel_tope, 0); 
+
+	return OK;
 }
