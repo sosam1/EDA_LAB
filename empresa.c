@@ -110,7 +110,8 @@ TipoRet ListarJerarquia(Empresa e){
 // Listar todos los cargos de la empresa en orden jerárquico. 
 // Lista todos los cargos de la empresa ordenados por nivel jerárquico e indentados
 // según se muestra el ejemplo de la letra. 
-	return NO_IMPLEMENTADA;
+	ListarCargosPorJerarquia(e->cargo_raiz, 0);
+	return OK;
 }
 
 TipoRet AsignarPersona(Empresa &e, Cadena cargo, Cadena nom, Cadena ci){
@@ -135,9 +136,7 @@ TipoRet EliminarPersona(Empresa &e, Cadena ci){
 	if(!PersonaExisteEnArbol(e->cargo_raiz, ci)){
 		return ERROR;
 	}
-
 	EliminarPersonaDeCargo(e->cargo_raiz, ci);
-
 	return OK;
 }
 

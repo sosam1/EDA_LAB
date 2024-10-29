@@ -79,18 +79,6 @@ Cargo& ObtenerSH(Cargo x){
     return x->sh;
 };
 
-void arbol_imprimir_tree_aux(Cargo x){
-    if (x != NULL){
-        Lista l = NULL; 
-        InsertarCargosALista(x, l);
-
-        while(l != NULL) {
-        cout << l->nombre_cargo << endl;
-        l = l->sig;
-        }
-    }
-};
-
 Lista InsertarCargosALista(Cargo x, Lista &l){ //necesario trabajar con la lista original
     if (x != NULL) {
         Lista aux = new nodo_lista();
@@ -231,4 +219,33 @@ Cargo BuscarCargoPorPersona(Cargo raiz, Cadena ci){
 void EliminarPersonaDeCargo(Cargo raiz, Cadena ci){
     Cargo cargo_donde_esta_perosna = BuscarCargoPorPersona(raiz, ci);
     EliminarPersonaDeLista(cargo_donde_esta_perosna->personas, ci);
+}
+
+/* void arbol_imprimir_tree_aux(Cargo x){
+    if (x != NULL){
+        Lista l = NULL; 
+        InsertarCargosALista(x, l);
+
+        while(l != NULL) {
+        cout << l->nombre_cargo << endl;
+        l = l->sig;
+        }
+    }
+}; */
+
+void ImprimirConIdentacion(Cargo cargo, int nivel){
+    for(int x=0; x<nivel; x++){
+        cout << "\t";
+    }
+    cout << cargo->nombre_cargo << " -" << endl;
+};
+
+void ListarCargosPorJerarquia(Cargo cargo_raiz, int nivel){
+    if(cargo_raiz != NULL){
+        ImprimirConIdentacion(cargo_raiz, nivel);
+
+        ListarCargosPorJerarquia(cargo_raiz->ph, nivel+1);
+        ListarCargosPorJerarquia(cargo_raiz->sh, nivel);
+    }
+
 }
