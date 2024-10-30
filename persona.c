@@ -114,7 +114,7 @@ void EliminarPersonaDeLista(ListaPersona &lista, Cadena ci) {
 
     if (actual != NULL) { // Nodo encontrado
         if (anterior == NULL) { // Si es el primer nodo de la lista
-            lista = actual->sig; // Reasignamos lista al siguiente nodo
+            lista = actual->sig;
         } else {
             anterior->sig = actual->sig; // Saltamos el nodo en la lista
         }

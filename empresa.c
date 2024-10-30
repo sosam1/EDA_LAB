@@ -145,7 +145,20 @@ TipoRet ReasignarPersona(Empresa &e, Cadena cargo, Cadena ci){
 // Reasigna una persona de la empresa de cédula ci al nuevo cargo de nombre cargo
 // siempre que el cargo exista en la empresa y esa persona no este ya asignada a
 // dicho cargo. En caso contrario la operación quedará sin efecto.
-	return NO_IMPLEMENTADA;
+	if(!cargoPertenece(e->cargo_raiz, cargo)){
+		return ERROR;
+	}
+	if(!PersonaExisteEnArbol(e->cargo_raiz, ci)){
+		return ERROR;
+	}
+	
+	if(PersonaExisteEnCargo(e->cargo_raiz, cargo, ci)){
+		return ERROR;
+	}
+
+	ReasignarPersonaACargo(e->cargo_raiz, cargo, ci);
+
+	return OK;
 }
 
 TipoRet ListarPersonas(Empresa e, Cadena cargo){
@@ -164,8 +177,8 @@ TipoRet ListarSuperCargos(Empresa e, Cadena cargo){
 	if(!cargoPertenece(e->cargo_raiz, cargo)){
 		return ERROR;
 	}
-	int nivel_tope = ObtenerNivelDeCargo(e->cargo_raiz, cargo, 0);
-	ImprimirSuperCargos(e->cargo_raiz, cargo, nivel_tope, 0); 
+	ImprimirSuperCargos(e->cargo_raiz, cargo);
+	cout << cargo << endl;
 
 	return OK;
 }

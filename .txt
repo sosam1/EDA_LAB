@@ -1,0 +1,28 @@
+void EliminarCargos(Cargo cargo_raiz, Cargo primer_cargo){
+    if (primer_cargo != NULL) {
+        // Llamar recursivamente a los hijos
+        EliminarPersonasDeCargo(primer_cargo);
+
+        //enganchar cargo padre con sh si corresponde
+        Cargo cargo_padre = ObtenerCargoPadre(cargo_raiz, primer_cargo->nombre_cargo);
+        cargo_padre->ph = primer_cargo->sh;
+
+        EliminarCargos(primer_cargo->ph);
+
+        //eliminar los sh del ph si tiene
+
+        delete[] primer_cargo->nombre_cargo; // liberar la cadena
+        delete primer_cargo; // liberar el nodo
+        primer_cargo = NULL;
+    }
+};
+
+Cargo ObtenerCargoPadre(Cargo cargo_raiz, Cadena cargo){
+    Cargo cargo_hijo = ObtenerCargo(cargo_raiz, cargo);
+
+    if(strcmp(cargo_raiz->ph, cargo_hijo) == 0){
+        return cargo_raiz;
+    }
+
+    return ObtenerCargoPadre(cargo_raiz->ph, cargo);
+}

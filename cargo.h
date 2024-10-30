@@ -41,8 +41,12 @@ void ImprimirConIdentacion(Cargo cargo, int nivel);
 
 void ListarCargosPorJerarquia(Cargo cargo_raiz, int nivel); 
 
-int ObtenerNivelDeCargo(Cargo cargo_raiz, Cadena cargo, int nivel);
+bool CargoAntecesor(Cargo cargo_raiz, Cadena cargo);
 
-void ImprimirSuperCargos(Cargo cargo_raiz, Cadena cargo, int nivel_tope, int nivel_actual);
+void ImprimirSuperCargos(Cargo cargo_raiz, Cadena cargo);
+
+bool PersonaExisteEnCargo(Cargo cargo_raiz, Cadena cargo, Cadena ci);
+
+void ReasignarPersonaACargo(Cargo cargo_raiz, Cadena cargo_nuevo, Cadena ci);
 
 #endif

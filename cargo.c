@@ -237,28 +237,60 @@ void ListarCargosPorJerarquia(Cargo cargo_raiz, int nivel){
     }
 }
 
-int ObtenerNivelDeCargo(Cargo cargo_raiz, Cadena cargo, int nivel){
-    if(cargo_raiz != NULL){
-        if(strcmp(cargo_raiz->nombre_cargo, cargo) == 0){
-            return nivel;
-        }else{
-                int nivel_ph = ObtenerNivelDeCargo(cargo_raiz->ph, cargo, nivel + 1);
-                if (nivel_ph != -1) { //-1 es el valor cuando no encuentra el nodo
-                    return nivel_ph; 
-                }
-                int nivel_sh = ObtenerNivelDeCargo(cargo_raiz->sh, cargo, nivel);
-                return nivel_sh;  
-            }
+bool CargoAntecesor(Cargo cargo_raiz, Cadena cargo) {
+    if (cargo_raiz == NULL) {
+        return false; // Si el nodo es NULL, no hay antecesor
     }
+    if (strcmp(cargo_raiz->nombre_cargo, cargo) == 0) {
+        return true; // Se encontró el cargo buscado
+    }
+    if (CargoAntecesor(cargo_raiz->ph, cargo)) {
+        return true; 
+    }
+
+    // Buscar en el hermano (sh)
+    return CargoAntecesor(cargo_raiz->sh, cargo);
 }
 
-void ImprimirSuperCargos(Cargo cargo_raiz, Cadena cargo, int nivel_tope, int nivel_actual){
-    if(cargo_raiz != NULL){
-        if(nivel_actual < nivel_tope){
-            cout << cargo_raiz->nombre_cargo << endl;
+void ImprimirSuperCargos(Cargo cargo_raiz, Cadena cargo) {
+    if (cargo_raiz != NULL) {
+        if(CargoAntecesor(cargo_raiz->ph, cargo)) { 
+            cout << cargo_raiz->nombre_cargo << endl; 
         }
-        ImprimirSuperCargos(cargo_raiz->ph, cargo, nivel_tope, nivel_actual+1);
-        ImprimirSuperCargos(cargo_raiz->sh, cargo, nivel_tope, nivel_actual);
+        ImprimirSuperCargos(cargo_raiz->ph, cargo);
+        ImprimirSuperCargos(cargo_raiz->sh, cargo);
     }
-
 }
+
+bool PersonaExisteEnCargo(Cargo cargo_raiz, Cadena cargo, Cadena ci){
+    Cargo cargo_buscar = ObtenerCargo(cargo_raiz, cargo);
+    ListaPersona l = cargo_buscar->personas;
+
+    while(l != NULL){
+        if(strcmp(ObtenerCi(ObtenerPersona(l)), ci) == 0){
+            return true;
+        }
+        l = ObtenerSig(l);
+    }
+    return false;
+};
+
+void ReasignarPersonaACargo(Cargo cargo_raiz, Cadena cargo_nuevo_asignar, Cadena ci){
+    Cargo cargo_anterior = BuscarCargoPorPersona(cargo_raiz, ci);
+    Cargo cargo_nuevo = ObtenerCargo(cargo_raiz, cargo_nuevo_asignar);
+    ListaPersona lista_anterior = cargo_anterior->personas;
+    Persona aux = NULL;
+
+    bool encontrado = false;
+    
+    while(lista_anterior != NULL || !encontrado){
+        if(strcmp(ObtenerCi(ObtenerPersona(lista_anterior)), ci) == 0){
+            //favor no tocar esta linea, les juro que funciona y es extremadamente necesaria y sensible para pasar bien el nombre
+            aux = CrearPersona(strcpy(new char[strlen(ObtenerNom(ObtenerPersona(lista_anterior))) + 1], ObtenerNom(ObtenerPersona(lista_anterior))), ci);
+            encontrado = true;
+        }
+        lista_anterior = ObtenerSig(lista_anterior);
+    }
+    EliminarPersonaDeCargo(cargo_raiz, ci);
+    InsertarPersonaACargo(cargo_raiz, cargo_nuevo_asignar, ObtenerNom(aux), ObtenerCi(aux));
+};
