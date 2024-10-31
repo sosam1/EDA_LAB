@@ -43,7 +43,7 @@ bool PersonaExisteEnCargo(ListaPersona p, Cadena ci){
         return false;
     }
 
-    if(strcmp(p->persona->ci, ci) == 0){
+    if(strcasecmp(p->persona->ci, ci) == 0){
         return true;
     }else{
         return PersonaExisteEnCargo(p->sig, ci);
@@ -107,7 +107,7 @@ void EliminarPersonaDeLista(ListaPersona &lista, Cadena ci) {
     ListaPersona anterior = NULL;
 
     // Buscar el nodo que contiene la CI de la persona a eliminar
-    while (actual != NULL && strcmp(ObtenerCi(ObtenerPersona(actual)), ci) != 0) {
+    while (actual != NULL && strcasecmp(ObtenerCi(ObtenerPersona(actual)), ci) != 0) {
         anterior = actual;
         actual = actual->sig;
     }

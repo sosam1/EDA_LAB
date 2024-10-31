@@ -9,7 +9,7 @@ typedef struct nodo_cargo * Cargo;
 typedef struct nodo_lista * Lista;
 
 // Funciones para manipular cargos
-Cargo CrearNuevoCargo(Cadena nombre);
+Cargo CrearNuevoCargo(Cadena nombre, Cadena padre);
 
 Cadena ObtenerNombreCargo(Cargo c);
 
@@ -48,5 +48,7 @@ void ImprimirSuperCargos(Cargo cargo_raiz, Cadena cargo);
 bool PersonaExisteEnCargo(Cargo cargo_raiz, Cadena cargo, Cadena ci);
 
 void ReasignarPersonaACargo(Cargo cargo_raiz, Cadena cargo_nuevo, Cadena ci);
+
+void EliminarCargoYSucesores(Cargo cargo_raiz, Cadena cargo_para_eliminar);
 
 #endif

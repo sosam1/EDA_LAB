@@ -11,6 +11,7 @@ struct nodo_cargo {
     Cadena nombre_cargo;
     Cargo ph;
     Cargo sh;
+    Cadena padre;
     ListaPersona personas;
 };
 
@@ -20,7 +21,7 @@ struct nodo_lista{
 };
 
 // Implementación de la función que crea un nuevo cargo
-Cargo CrearNuevoCargo(Cadena nombre) {
+Cargo CrearNuevoCargo(Cadena nombre, Cadena padre) {
     Cargo c = new(nodo_cargo);
     if (c != NULL) {
         c->nombre_cargo = new(char[MAX_NOMBRE_CARGO]);
@@ -28,6 +29,12 @@ Cargo CrearNuevoCargo(Cadena nombre) {
         c->ph = NULL;
         c->sh = NULL;
         c->personas = NULL;
+        if (padre != NULL) {
+            c->padre = new char[MAX_NOMBRE_CARGO];
+            strcpy(c->padre, padre);
+        } else {
+            c->padre = NULL; // Si es el primer cargo, no tiene padre
+        }
     }
     return c;
 };
@@ -40,7 +47,7 @@ bool cargoPertenece(Cargo x, Cadena nombre_cargo){
 // Retorna true si nombre_cargo pertenece a la empresa e
 	if (x == NULL)
 		return false;
-	else if (strcmp(x->nombre_cargo, nombre_cargo) == 0){
+	else if (strcasecmp(x->nombre_cargo, nombre_cargo) == 0){
         return true;
     } 
     else {
@@ -51,7 +58,7 @@ bool cargoPertenece(Cargo x, Cadena nombre_cargo){
 Cargo ObtenerCargo(Cargo c, Cadena nombre_cargo){
     if (c == NULL)
 		return NULL;
-	else if (strcmp(c->nombre_cargo, nombre_cargo) == 0){
+	else if (strcasecmp(c->nombre_cargo, nombre_cargo) == 0){
         return c; // si el primer nodo coincide lo retorno
     } 
     else {
@@ -108,7 +115,7 @@ void OrdenarAlfabetico(Lista &l) {
         Lista actual = l;
 
         while(actual->sig != NULL){
-            if (strcmp(actual->nombre_cargo, actual->sig->nombre_cargo) > 0){
+            if (strcasecmp(actual->nombre_cargo, actual->sig->nombre_cargo) > 0){
                 Cadena aux = actual->nombre_cargo;
                 actual->nombre_cargo = actual->sig->nombre_cargo;
                 actual->sig->nombre_cargo = aux;
@@ -168,7 +175,7 @@ bool PersonaExisteEnArbol(Cargo c, Cadena ci){
     ListaPersona p = c->personas;
 
     while(p != NULL){
-        if(strcmp(ObtenerCi(ObtenerPersona(p)), ci) == 0){
+        if(strcasecmp(ObtenerCi(ObtenerPersona(p)), ci) == 0){
             return true;
         }else{
             p = ObtenerSig(p);
@@ -201,7 +208,7 @@ Cargo BuscarCargoPorPersona(Cargo raiz, Cadena ci){
     ListaPersona l = raiz->personas;
 
     while(l!=NULL){
-        if(strcmp(ObtenerCi(ObtenerPersona(l)), ci) == 0){
+        if(strcasecmp(ObtenerCi(ObtenerPersona(l)), ci) == 0){
             return raiz;
         }
         l = ObtenerSig(l);
@@ -241,7 +248,7 @@ bool CargoAntecesor(Cargo cargo_raiz, Cadena cargo) {
     if (cargo_raiz == NULL) {
         return false; // Si el nodo es NULL, no hay antecesor
     }
-    if (strcmp(cargo_raiz->nombre_cargo, cargo) == 0) {
+    if (strcasecmp(cargo_raiz->nombre_cargo, cargo) == 0) {
         return true; // Se encontró el cargo buscado
     }
     if (CargoAntecesor(cargo_raiz->ph, cargo)) {
@@ -267,7 +274,7 @@ bool PersonaExisteEnCargo(Cargo cargo_raiz, Cadena cargo, Cadena ci){
     ListaPersona l = cargo_buscar->personas;
 
     while(l != NULL){
-        if(strcmp(ObtenerCi(ObtenerPersona(l)), ci) == 0){
+        if(strcasecmp(ObtenerCi(ObtenerPersona(l)), ci) == 0){
             return true;
         }
         l = ObtenerSig(l);
@@ -284,7 +291,7 @@ void ReasignarPersonaACargo(Cargo cargo_raiz, Cadena cargo_nuevo_asignar, Cadena
     bool encontrado = false;
     
     while(lista_anterior != NULL || !encontrado){
-        if(strcmp(ObtenerCi(ObtenerPersona(lista_anterior)), ci) == 0){
+        if(strcasecmp(ObtenerCi(ObtenerPersona(lista_anterior)), ci) == 0){
             //favor no tocar esta linea, les juro que funciona y es extremadamente necesaria y sensible para pasar bien el nombre
             aux = CrearPersona(strcpy(new char[strlen(ObtenerNom(ObtenerPersona(lista_anterior))) + 1], ObtenerNom(ObtenerPersona(lista_anterior))), ci);
             encontrado = true;
@@ -293,4 +300,36 @@ void ReasignarPersonaACargo(Cargo cargo_raiz, Cadena cargo_nuevo_asignar, Cadena
     }
     EliminarPersonaDeCargo(cargo_raiz, ci);
     InsertarPersonaACargo(cargo_raiz, cargo_nuevo_asignar, ObtenerNom(aux), ObtenerCi(aux));
+};
+
+void EliminarCargoYSucesores(Cargo cargo_raiz, Cadena cargo_para_eliminar){
+
+     if (cargo_para_eliminar != NULL) {
+        Cargo cargo = ObtenerCargo(cargo_raiz, cargo_para_eliminar);
+        Cargo cargo_padre = ObtenerCargo(cargo_raiz,cargo->padre);
+        
+        if(cargo->ph != NULL){
+            EliminarCargos(cargo->ph); // borraria todo el arbol a partir del hijo del que queremos eliminar
+        }
+
+        //enganchar cargo padre con sh si corresponde
+        if(strcasecmp(cargo_padre->ph->nombre_cargo, cargo_para_eliminar) == 0){//el primer hijo del padre es el que queremos borrar
+            cargo_padre->ph = cargo->sh;
+        }else{
+            //el cargo para eliminar esta entre SH
+            Cargo anterior = cargo_padre->ph;
+            while (anterior->sh != NULL && strcasecmp(anterior->sh->nombre_cargo, cargo_para_eliminar) != 0) {
+                anterior = anterior->sh;
+            }
+            // Conectar el `sh` del nodo anterior al siguiente nodo después del que se elimina
+            if (anterior->sh != NULL) {
+                anterior->sh = cargo->sh;
+            }
+        }
+             
+        delete[] cargo->nombre_cargo; // liberar la cadena
+        delete cargo; // liberar el nodo
+        cargo = NULL; 
+    }
+
 };

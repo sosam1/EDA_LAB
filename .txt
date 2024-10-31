@@ -17,6 +17,8 @@ void EliminarCargos(Cargo cargo_raiz, Cargo primer_cargo){
     }
 };
 
+///strcasecmp
+
 Cargo ObtenerCargoPadre(Cargo cargo_raiz, Cadena cargo){
     Cargo cargo_hijo = ObtenerCargo(cargo_raiz, cargo);
 

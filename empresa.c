@@ -8,6 +8,7 @@
 #include "empresa.h"
 #include "cargo.h"
 #include <iostream>
+#include <string.h> 
 
 using namespace std;
 
@@ -29,8 +30,8 @@ Empresa CrearEmpresa(Cargo primerCargo) {
 
 TipoRet CrearOrg(Empresa &e, Cadena cargo) {
 // Inicializa la empresa y crea el primer cargo de la empresa.
-// Originalmente la misma debería  estar vacía, en otro caso la operación quedará sin efecto. 
-	Cargo primerCargo = CrearNuevoCargo(cargo);
+// Originalmente la misma debería  estar vacía, en otro caso la operación quedará sin efecto.
+	Cargo primerCargo = CrearNuevoCargo(cargo, NULL);
 	e = CrearEmpresa(primerCargo);
 	return OK;
 }
@@ -44,6 +45,7 @@ TipoRet EliminarOrg(Empresa &e){
 	else {
 		EliminarCargos(e->cargo_raiz);
 		delete e;
+		e = NULL;
 	}
     return OK;
 }
@@ -52,6 +54,10 @@ TipoRet NuevoCargo(Empresa &e, Cadena cargoPadre, Cadena nuevoCargo){
 // Insertar un nuevo cargo como dependiente de otro ya existente.
 // El nuevo cargo no debe existir en el sistema.
 // PRE: la empresa debe estar creada
+	if (e == NULL) {
+        return ERROR;
+    }
+
 	if(!cargoPertenece(e->cargo_raiz, cargoPadre)) { //si el cargo padre no existe da error
 		return ERROR;
 	}
@@ -60,7 +66,7 @@ TipoRet NuevoCargo(Empresa &e, Cadena cargoPadre, Cadena nuevoCargo){
 			return ERROR;
 		} 
 		else {
-			Cargo aux = CrearNuevoCargo(nuevoCargo);
+			Cargo aux = CrearNuevoCargo(nuevoCargo, cargoPadre);
 			Cargo padre = ObtenerCargo(e->cargo_raiz, cargoPadre); // busca el nodo del cargo en el arbol
 
 			if(ObtenerPH(padre) == NULL) { //si no tiene ningun hijo creamos el cargo ahi
@@ -84,10 +90,19 @@ TipoRet EliminarCargo(Empresa &e, Cadena cargo){
 // En otro caso la operación quedará sin efecto.
 // Si el cargo a eliminar posee subcargos, éstos deberán ser eliminados también, así como
 // las personas asociadas a cada uno de los cargos suprimidos.
+	if (e == NULL) {
+        return ERROR;
+    }
+
 	if(!cargoPertenece(e->cargo_raiz, cargo)){
 		return ERROR;
 	}
-	EliminarCargos(ObtenerCargo(e->cargo_raiz, cargo));
+	if(strcasecmp(ObtenerNombreCargo(e->cargo_raiz), cargo) == 0){
+		return ERROR;
+	}else{
+		EliminarCargoYSucesores(e->cargo_raiz, cargo);
+	}
+
 	return OK;
 }
 
@@ -109,7 +124,10 @@ TipoRet ListarCargosAlf(Empresa e){
 TipoRet ListarJerarquia(Empresa e){
 // Listar todos los cargos de la empresa en orden jerárquico. 
 // Lista todos los cargos de la empresa ordenados por nivel jerárquico e indentados
-// según se muestra el ejemplo de la letra. 
+// según se muestra el ejemplo de la letra.
+	if (e == NULL) {
+        return ERROR;
+    }
 	ListarCargosPorJerarquia(e->cargo_raiz, 0);
 	return OK;
 }
@@ -119,6 +137,10 @@ TipoRet AsignarPersona(Empresa &e, Cadena cargo, Cadena nom, Cadena ci){
 // Asigna una persona de nombre nom  y cédula de identidad ci al cargo cargo
 // siempre que el cargo exista en la empresa y esa persona no este asignada a
 // ese u otro cargo, en caso contrario la operación quedará sin efecto.
+	if (e == NULL) {
+        return ERROR;
+    }
+
 	if(!cargoPertenece(e->cargo_raiz, cargo)){
 		return ERROR;
 	}
@@ -133,6 +155,10 @@ TipoRet EliminarPersona(Empresa &e, Cadena ci){
 // Eliminar una persona de un cargo.
 // Elimina una persona de cédula ci de la empresa siempre y cuando la misma exista,
 // en caso contrario la operación quedará sin efecto.
+	if (e == NULL) {
+        return ERROR;
+    }
+
 	if(!PersonaExisteEnArbol(e->cargo_raiz, ci)){
 		return ERROR;
 	}
@@ -145,6 +171,10 @@ TipoRet ReasignarPersona(Empresa &e, Cadena cargo, Cadena ci){
 // Reasigna una persona de la empresa de cédula ci al nuevo cargo de nombre cargo
 // siempre que el cargo exista en la empresa y esa persona no este ya asignada a
 // dicho cargo. En caso contrario la operación quedará sin efecto.
+	if (e == NULL) {
+        return ERROR;
+    }
+
 	if(!cargoPertenece(e->cargo_raiz, cargo)){
 		return ERROR;
 	}
@@ -164,6 +194,10 @@ TipoRet ReasignarPersona(Empresa &e, Cadena cargo, Cadena ci){
 TipoRet ListarPersonas(Empresa e, Cadena cargo){
 // Dado un cargo listar las personas asignadas al mismo ordenadas por fecha de alta a la empresa. 
 // Lista todas las personas asignadas al cargo de nombre cargo.
+	if (e == NULL) {
+        return ERROR;
+    }
+
 	if(!cargoPertenece(e->cargo_raiz, cargo)){
 		return ERROR;
 	}
@@ -174,6 +208,10 @@ TipoRet ListarPersonas(Empresa e, Cadena cargo){
 TipoRet ListarSuperCargos(Empresa e, Cadena cargo){
 // Dado un cargo listar los cargos que lo anteceden.
 // Lista todas los cargos que anteceden, en la jerarquía, al cargo de nombre cargo.
+	if (e == NULL) {
+        return ERROR;
+    }
+
 	if(!cargoPertenece(e->cargo_raiz, cargo)){
 		return ERROR;
 	}
