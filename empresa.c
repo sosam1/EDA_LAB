@@ -31,7 +31,7 @@ Empresa CrearEmpresa(Cargo primerCargo) {
 TipoRet CrearOrg(Empresa &e, Cadena cargo) {
 // Inicializa la empresa y crea el primer cargo de la empresa.
 // Originalmente la misma debería  estar vacía, en otro caso la operación quedará sin efecto.
-	Cargo primerCargo = CrearNuevoCargo(cargo, NULL);
+	Cargo primerCargo = CrearNuevoCargo(NULL, cargo, NULL);
 	e = CrearEmpresa(primerCargo);
 	return OK;
 }
@@ -66,7 +66,7 @@ TipoRet NuevoCargo(Empresa &e, Cadena cargoPadre, Cadena nuevoCargo){
 			return ERROR;
 		} 
 		else {
-			Cargo aux = CrearNuevoCargo(nuevoCargo, cargoPadre);
+			Cargo aux = CrearNuevoCargo(e->cargo_raiz,nuevoCargo, cargoPadre);
 			Cargo padre = ObtenerCargo(e->cargo_raiz, cargoPadre); // busca el nodo del cargo en el arbol
 
 			if(ObtenerPH(padre) == NULL) { //si no tiene ningun hijo creamos el cargo ahi

@@ -9,7 +9,7 @@ typedef struct nodo_cargo * Cargo;
 typedef struct nodo_lista * Lista;
 
 // Funciones para manipular cargos
-Cargo CrearNuevoCargo(Cadena nombre, Cadena padre);
+Cargo CrearNuevoCargo(Cargo cargo_raiz, Cadena nombre, Cadena padre);
 
 Cadena ObtenerNombreCargo(Cargo c);
 

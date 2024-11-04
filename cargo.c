@@ -11,7 +11,7 @@ struct nodo_cargo {
     Cadena nombre_cargo;
     Cargo ph;
     Cargo sh;
-    Cadena padre;
+    Cargo padre;
     ListaPersona personas;
 };
 
@@ -21,7 +21,7 @@ struct nodo_lista{
 };
 
 // Implementación de la función que crea un nuevo cargo
-Cargo CrearNuevoCargo(Cadena nombre, Cadena padre) {
+Cargo CrearNuevoCargo(Cargo cargo_raiz, Cadena nombre, Cadena padre) {
     Cargo c = new(nodo_cargo);
     if (c != NULL) {
         c->nombre_cargo = new(char[MAX_NOMBRE_CARGO]);
@@ -30,8 +30,7 @@ Cargo CrearNuevoCargo(Cadena nombre, Cadena padre) {
         c->sh = NULL;
         c->personas = NULL;
         if (padre != NULL) {
-            c->padre = new char[MAX_NOMBRE_CARGO];
-            strcpy(c->padre, padre);
+            c->padre = ObtenerCargo(cargo_raiz,padre);
         } else {
             c->padre = NULL; // Si es el primer cargo, no tiene padre
         }
@@ -303,10 +302,9 @@ void ReasignarPersonaACargo(Cargo cargo_raiz, Cadena cargo_nuevo_asignar, Cadena
 };
 
 void EliminarCargoYSucesores(Cargo cargo_raiz, Cadena cargo_para_eliminar){
-
      if (cargo_para_eliminar != NULL) {
         Cargo cargo = ObtenerCargo(cargo_raiz, cargo_para_eliminar);
-        Cargo cargo_padre = ObtenerCargo(cargo_raiz,cargo->padre);
+        Cargo cargo_padre = cargo->padre;
         
         if(cargo->ph != NULL){
             EliminarCargos(cargo->ph); // borraria todo el arbol a partir del hijo del que queremos eliminar
@@ -331,5 +329,4 @@ void EliminarCargoYSucesores(Cargo cargo_raiz, Cadena cargo_para_eliminar){
         delete cargo; // liberar el nodo
         cargo = NULL; 
     }
-
 };
